@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 
 const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 
 const __filename = fileURLToPath(import.meta.url);
