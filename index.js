@@ -18,14 +18,25 @@ app.use(express.static(__dirname + '/assets'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.get("/", async function(req, res) {
-    try {
-        const result = await axios.get("https://api.adviceslip.com/advice");
-        res.render("index", { id: result.data.slip.id, advice: result.data.slip.advice });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
+app.get("/", async (req, res) => {
+  try {
+    const result = await axios.get(
+      "https://api.adviceslip.com/advice",
+      {
+        timeout: 3000,
+      }
+    );
+
+    res.render("index", {
+      id: result.data.slip.id,
+      advice: result.data.slip.advice,
+    });
+  } catch (err) {
+    res.render("index", {
+      id: 0,
+      advice: "Unable to fetch advice at the moment. Please try again.",
+    });
+  }
 });
 
 app.listen(process.env.PORT || 3000, function(){
